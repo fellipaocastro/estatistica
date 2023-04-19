@@ -1,0 +1,65 @@
+import random
+
+import numpy as np
+import pandas as pd
+
+ds_census = pd.read_csv('datasets/census.csv')
+
+print('\nAmostragem aleatória simples')
+
+
+def amostragem_aleatoria_simples(dataset, amostras):
+    return dataset.sample(n=amostras, random_state=1)
+
+
+df_amostra_aleatoria_simples = amostragem_aleatoria_simples(ds_census, 100)
+print(df_amostra_aleatoria_simples.shape)
+print(df_amostra_aleatoria_simples.head())
+
+print('\nAmostragem sistemática')
+
+
+def amostragem_sistematica(dataset, amostras, seed=1):
+    intervalo = len(dataset) // amostras
+    random.seed(seed)
+    inicio = random.randint(0, intervalo)
+    indices = np.arange(inicio, len(dataset), step=intervalo)
+    amostra_sistematica = dataset.iloc[indices]
+
+    return amostra_sistematica
+
+
+df_amostra_sistematica = amostragem_sistematica(ds_census, 100)
+print(df_amostra_sistematica.shape)
+print(df_amostra_sistematica.head())
+
+
+print('\nAmostragem por grupos')
+
+
+def amostragem_agrupamento(dataset, numero_grupos, seed=1):
+    intervalo = len(dataset) // numero_grupos
+
+    grupos = []
+    id_grupo = 0
+    contagem = 0
+
+    for _ in dataset.iterrows():
+        grupos.append(id_grupo)
+        contagem += 1
+
+        if contagem > intervalo:
+            contagem = 0
+            id_grupo += 1
+
+    dataset['grupo'] = grupos
+    random.seed(seed)
+    grupo_selecionado = random.randint(0, numero_grupos)
+
+    return dataset[dataset['grupo'] == grupo_selecionado]
+
+
+df_amostra_agrupamento = amostragem_agrupamento(ds_census, 100)
+print(df_amostra_agrupamento.shape)
+print(df_amostra_agrupamento['grupo'].value_counts())
+print(df_amostra_agrupamento.head())

@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 
 
-def amostragem_aleatoria_simples(dataset, amostras):
-    return dataset.sample(n=amostras, random_state=1)
+def amostragem_aleatoria_simples(dataset, amostras, seed=1):
+    return dataset.sample(n=amostras, random_state=seed)
 
 
 def amostragem_sistematica(dataset, amostras, seed=1):
@@ -47,14 +47,17 @@ if __name__ == '__main__':
     df_amostra_aleatoria_simples = amostragem_aleatoria_simples(ds_census, 100)
     print(df_amostra_aleatoria_simples.shape)
     print(df_amostra_aleatoria_simples.head())
+    print(df_amostra_aleatoria_simples.tail())
 
     print('\nAmostragem sistemática')
     df_amostra_sistematica = amostragem_sistematica(ds_census, 100)
     print(df_amostra_sistematica.shape)
     print(df_amostra_sistematica.head())
+    print(df_amostra_sistematica.tail())
 
     print('\nAmostragem por grupos')
     df_amostra_agrupamento = amostragem_agrupamento(ds_census, 100)
     print(df_amostra_agrupamento.shape)
     print(df_amostra_agrupamento['grupo'].value_counts())
     print(df_amostra_agrupamento.head())
+    print(df_amostra_agrupamento.tail())

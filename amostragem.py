@@ -20,9 +20,7 @@ def amostragem_sistematica(dataset, amostras, seed=1):
     return amostra_sistematica
 
 
-def amostragem_agrupamento(dataset, numero_grupos, seed=1):
-    intervalo = len(dataset) / numero_grupos
-
+def amostragem_agrupamento(dataset, amostras, seed=1):
     grupos = []
     id_grupo = 0
     contagem = 0
@@ -31,13 +29,14 @@ def amostragem_agrupamento(dataset, numero_grupos, seed=1):
         grupos.append(id_grupo)
         contagem += 1
 
-        if contagem > intervalo:
+        if contagem >= amostras:
             contagem = 0
             id_grupo += 1
 
     dataset['grupo'] = grupos
+    numero_grupos = len(dataset) // amostras if len(dataset) % amostras == 0 else (len(dataset) // amostras) - 1
     random.seed(seed)
-    grupo_selecionado = random.randint(0, numero_grupos)
+    grupo_selecionado = random.randint(0, numero_grupos - 1)
 
     return dataset[dataset['grupo'] == grupo_selecionado]
 

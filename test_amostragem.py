@@ -60,7 +60,7 @@ def test_amostragem_sistematica_mean_age():
 def test_amostragem_agrupamento_shape():
     df_amostra_agrupamento = amostragem_agrupamento(ds_census, 100, SEED)
 
-    assert df_amostra_agrupamento.shape == (326, 16)
+    assert df_amostra_agrupamento.shape == (100, 16)
 
 
 def test_amostragem_agrupamento_value_counts():
@@ -68,25 +68,25 @@ def test_amostragem_agrupamento_value_counts():
 
     tm.assert_series_equal(
         df_amostra_agrupamento['grupo'].value_counts(),
-        pd.Series(data={17: 326}, name='count', index=pd.Index([17], dtype='int64', name='grupo')))
+        pd.Series(data={68: 100}, name='count', index=pd.Index([68], dtype='int64', name='grupo')))
 
 
 def test_amostragem_agrupamento_start():
     df_amostra_agrupamento = amostragem_agrupamento(ds_census, 100, SEED)
 
-    assert df_amostra_agrupamento.index[0] == 5542
+    assert df_amostra_agrupamento.index[0] == 6800
 
 
 def test_amostragem_agrupamento_end():
     df_amostra_agrupamento = amostragem_agrupamento(ds_census, 100, SEED)
 
-    assert df_amostra_agrupamento.index[-1] == 5867
+    assert df_amostra_agrupamento.index[-1] == 6899
 
 
 def test_amostragem_agrupamento_mean_age():
     df_amostra_agrupamento = amostragem_agrupamento(ds_census, 100, SEED)
 
-    assert df_amostra_agrupamento['age'].mean() == 39.23312883435583
+    assert df_amostra_agrupamento['age'].mean() == 38.97
 
 
 def test_amostragem_estratificada_shape():

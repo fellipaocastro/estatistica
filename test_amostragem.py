@@ -2,7 +2,7 @@ import pandas as pd
 from pandas import testing as tm
 
 from amostragem import amostragem_aleatoria_simples, amostragem_sistematica, amostragem_agrupamento,\
-    amostragem_estratificada
+    amostragem_estratificada, amostragem_reservatorio
 
 
 ds_census = pd.read_csv('datasets/census.csv')
@@ -27,6 +27,12 @@ def test_amostragem_aleatoria_simples_end():
     assert df_amostra_aleatoria_simples.index[-1] == 551
 
 
+def test_amostragem_aleatoria_simples_mean_age():
+    df_amostra_aleatoria_simples = amostragem_aleatoria_simples(ds_census, 100, SEED)
+
+    assert df_amostra_aleatoria_simples['age'].mean() == 39.41
+
+
 def test_amostragem_sistematica_shape():
     df_amostra_sistematica = amostragem_sistematica(ds_census, 100, SEED)
 
@@ -43,6 +49,12 @@ def test_amostragem_sistematica_end():
     df_amostra_sistematica = amostragem_sistematica(ds_census, 100, SEED)
 
     assert df_amostra_sistematica.index[-1] == 32243
+
+
+def test_amostragem_sistematica_mean_age():
+    df_amostra_sistematica = amostragem_sistematica(ds_census, 100, SEED)
+
+    assert df_amostra_sistematica['age'].mean() == 37.57
 
 
 def test_amostragem_agrupamento_shape():
@@ -71,6 +83,12 @@ def test_amostragem_agrupamento_end():
     assert df_amostra_agrupamento.index[-1] == 5867
 
 
+def test_amostragem_agrupamento_mean_age():
+    df_amostra_agrupamento = amostragem_agrupamento(ds_census, 100, SEED)
+
+    assert df_amostra_agrupamento['age'].mean() == 39.23312883435583
+
+
 def test_amostragem_estratificada_shape():
     df_amostra_estratificada = amostragem_estratificada(ds_census, 100, SEED)
 
@@ -89,10 +107,40 @@ def test_amostragem_estratificada_value_counts():
 def test_amostragem_estratificada_start():
     df_amostra_estratificada = amostragem_estratificada(ds_census, 100, SEED)
 
-    assert df_amostra_estratificada.index[0] == 25535
+    assert df_amostra_estratificada.index[0] == 5611
 
 
 def test_amostragem_estratificada_end():
     df_amostra_estratificada = amostragem_estratificada(ds_census, 100, SEED)
 
-    assert df_amostra_estratificada.index[-1] == 4521
+    assert df_amostra_estratificada.index[-1] == 23215
+
+
+def test_amostragem_estratificada_mean_age():
+    df_amostra_estratificada = amostragem_estratificada(ds_census, 100, SEED)
+
+    assert df_amostra_estratificada['age'].mean() == 36.9
+
+
+def test_amostragem_reservatorio_shape():
+    df_amostra_reservatorio = amostragem_reservatorio(ds_census, 100, SEED)
+
+    assert df_amostra_reservatorio.shape == (100, 16)
+
+
+def test_amostragem_reservatorio_start():
+    df_amostra_reservatorio = amostragem_reservatorio(ds_census, 100, SEED)
+
+    assert df_amostra_reservatorio.index[0] == 29608
+
+
+def test_amostragem_reservatorio_end():
+    df_amostra_reservatorio = amostragem_reservatorio(ds_census, 100, SEED)
+
+    assert df_amostra_reservatorio.index[-1] == 25870
+
+
+def test_amostragem_reservatorio_mean_age():
+    df_amostra_reservatorio = amostragem_reservatorio(ds_census, 100, SEED)
+
+    assert df_amostra_reservatorio['age'].mean() == 37.85

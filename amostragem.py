@@ -1,4 +1,5 @@
 import random
+from collections import deque
 
 import numpy as np
 import pandas as pd
@@ -20,7 +21,7 @@ def amostragem_sistematica(dataset, amostras, seed=1):
 
 
 def amostragem_agrupamento(dataset, numero_grupos, seed=1):
-    intervalo = len(dataset) // numero_grupos
+    intervalo = len(dataset) / numero_grupos
 
     grupos = []
     id_grupo = 0
@@ -45,9 +46,31 @@ def amostragem_estratificada(dataset, amostras, seed=1):
     percentual = amostras / len(dataset)
     split = StratifiedShuffleSplit(test_size=percentual, random_state=seed)
 
-    _, test_index = next(split.split(dataset, dataset['income']))
+    _, test_index = deque(split.split(dataset, dataset['income']), maxlen=1)[0]
 
     return dataset.iloc[test_index]
+
+
+def amostragem_reservatorio(dataset, amostras, seed=1):
+    tamanho = len(dataset)
+    stream = np.arange(tamanho)
+
+    reservatorio = np.zeros(amostras, dtype=np.int32)
+
+    i = 0
+
+    for i in range(amostras):
+        reservatorio[i] = stream[i]
+
+    random.seed(seed)
+
+    while i < tamanho:
+        j = random.randrange(i + 1)
+        if j < amostras:
+            reservatorio[j] = stream[i]
+        i += 1
+
+    return dataset.iloc[reservatorio]
 
 
 if __name__ == '__main__':
@@ -74,3 +97,17 @@ if __name__ == '__main__':
     print(df_amostra_estratificada.shape)
     print(df_amostra_estratificada['income'].value_counts())
     print(df_amostra_estratificada)
+
+    print('\nAmostragem de reservatório')
+    df_amostra_reservatorio = amostragem_reservatorio(ds_census, 100)
+    print(df_amostra_reservatorio.shape)
+    print(df_amostra_reservatorio)
+
+    print('\nComparativo dos resultados')
+    print(f"len(ds_census): {len(ds_census)}")
+    print(f"ds_census['age'].mean(): {ds_census['age'].mean()}")
+    print(f"df_amostra_aleatoria_simples['age'].mean(): {df_amostra_aleatoria_simples['age'].mean()}")
+    print(f"df_amostra_sistematica['age'].mean(): {df_amostra_sistematica['age'].mean()}")
+    print(f"df_amostra_agrupamento['age'].mean(): {df_amostra_agrupamento['age'].mean()}")
+    print(f"df_amostra_estratificada['age'].mean(): {df_amostra_estratificada['age'].mean()}")
+    print(f"df_amostragem_reservatorio['age'].mean(): {df_amostra_reservatorio['age'].mean()}")

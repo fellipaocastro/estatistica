@@ -19,22 +19,21 @@ def amostragem_sistematica(dataset, amostras, seed=None):
     return amostra_sistematica
 
 
-def amostragem_agrupamento(dataset, numero_grupos, seed=None):
+def amostragem_agrupamento(dataset, amostras, seed=None):
     grupos = []
     id_grupo = 0
     contagem = 0
-
-    intervalo = len(dataset) // numero_grupos
 
     for _ in dataset.iterrows():
         grupos.append(id_grupo)
         contagem += 1
 
-        if contagem >= intervalo:
+        if contagem >= amostras:
             contagem = 0
             id_grupo += 1
 
     dataset['grupo'] = grupos
+    numero_grupos = len(dataset) // amostras
     random.seed(seed)
     grupo_selecionado = random.randint(0, numero_grupos)
 
@@ -86,7 +85,7 @@ if __name__ == '__main__':
     print(df_amostra_sistematica)
 
     print('\nAmostragem por grupos')
-    df_amostra_agrupamento = amostragem_agrupamento(ds_census, 325)
+    df_amostra_agrupamento = amostragem_agrupamento(ds_census, 100)
     print(df_amostra_agrupamento.shape)
     print(df_amostra_agrupamento['grupo'].value_counts())
     print(df_amostra_agrupamento)

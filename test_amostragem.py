@@ -58,13 +58,13 @@ def test_amostragem_sistematica_mean_age():
 
 
 def test_amostragem_agrupamento_shape():
-    df_amostra_agrupamento = amostragem_agrupamento(ds_census, 325, SEED)
+    df_amostra_agrupamento = amostragem_agrupamento(ds_census, 100, SEED)
 
     assert df_amostra_agrupamento.shape == (100, 16)
 
 
 def test_amostragem_agrupamento_value_counts():
-    df_amostra_agrupamento = amostragem_agrupamento(ds_census, 325, SEED)
+    df_amostra_agrupamento = amostragem_agrupamento(ds_census, 100, SEED)
 
     tm.assert_series_equal(
         df_amostra_agrupamento['grupo'].value_counts(),
@@ -72,19 +72,19 @@ def test_amostragem_agrupamento_value_counts():
 
 
 def test_amostragem_agrupamento_start():
-    df_amostra_agrupamento = amostragem_agrupamento(ds_census, 325, SEED)
+    df_amostra_agrupamento = amostragem_agrupamento(ds_census, 100, SEED)
 
     assert df_amostra_agrupamento.index[0] == 6800
 
 
 def test_amostragem_agrupamento_end():
-    df_amostra_agrupamento = amostragem_agrupamento(ds_census, 325, SEED)
+    df_amostra_agrupamento = amostragem_agrupamento(ds_census, 100, SEED)
 
     assert df_amostra_agrupamento.index[-1] == 6899
 
 
 def test_amostragem_agrupamento_mean_age():
-    df_amostra_agrupamento = amostragem_agrupamento(ds_census, 325, SEED)
+    df_amostra_agrupamento = amostragem_agrupamento(ds_census, 100, SEED)
 
     assert df_amostra_agrupamento['age'].mean() == 38.97
 

@@ -1,16 +1,15 @@
 import random
-from collections import deque
 
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import StratifiedShuffleSplit
 
 
-def amostragem_aleatoria_simples(dataset, amostras, seed=1):
+def amostragem_aleatoria_simples(dataset, amostras, seed=None):
     return dataset.sample(n=amostras, random_state=seed)
 
 
-def amostragem_sistematica(dataset, amostras, seed=1):
+def amostragem_sistematica(dataset, amostras, seed=None):
     intervalo = len(dataset) // amostras
     random.seed(seed)
     inicio = random.randint(0, intervalo)
@@ -20,7 +19,7 @@ def amostragem_sistematica(dataset, amostras, seed=1):
     return amostra_sistematica
 
 
-def amostragem_agrupamento(dataset, amostras, seed=1):
+def amostragem_agrupamento(dataset, amostras, seed=None):
     grupos = []
     id_grupo = 0
     contagem = 0
@@ -34,23 +33,23 @@ def amostragem_agrupamento(dataset, amostras, seed=1):
             id_grupo += 1
 
     dataset['grupo'] = grupos
-    numero_grupos = len(dataset) // amostras if len(dataset) % amostras == 0 else (len(dataset) // amostras) - 1
+    numero_grupos = len(dataset) // amostras
     random.seed(seed)
     grupo_selecionado = random.randint(0, numero_grupos - 1)
 
     return dataset[dataset['grupo'] == grupo_selecionado]
 
 
-def amostragem_estratificada(dataset, amostras, seed=1):
+def amostragem_estratificada(dataset, amostras, seed=None):
     percentual = amostras / len(dataset)
     split = StratifiedShuffleSplit(test_size=percentual, random_state=seed)
 
-    _, test_index = deque(split.split(dataset, dataset['income']), maxlen=1)[0]
+    _, test_index = next(split.split(dataset, dataset['income']))
 
     return dataset.iloc[test_index]
 
 
-def amostragem_reservatorio(dataset, amostras, seed=1):
+def amostragem_reservatorio(dataset, amostras, seed=None):
     tamanho = len(dataset)
     stream = np.arange(tamanho)
 

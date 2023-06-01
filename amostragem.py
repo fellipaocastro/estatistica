@@ -91,7 +91,7 @@ if __name__ == '__main__':
     print(df_amostra_agrupamento)
 
     print('\nAmostragem estratificada')
-    df_amostra_estratificada = amostragem_estratificada(ds_census, 'income', 100)
+    df_amostra_estratificada = amostragem_estratificada(ds_census, 100, 'income')
     print(df_amostra_estratificada.shape)
     print(df_amostra_estratificada['income'].value_counts())
     print(df_amostra_estratificada)

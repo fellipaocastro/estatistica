@@ -90,13 +90,13 @@ def test_amostragem_agrupamento_mean_age():
 
 
 def test_amostragem_estratificada_shape():
-    df_amostra_estratificada = amostragem_estratificada(ds_census, 100, SEED)
+    df_amostra_estratificada = amostragem_estratificada(ds_census, 100, 'income', SEED)
 
     assert df_amostra_estratificada.shape == (100, 16)
 
 
 def test_amostragem_estratificada_value_counts():
-    df_amostra_estratificada = amostragem_estratificada(ds_census, 100, SEED)
+    df_amostra_estratificada = amostragem_estratificada(ds_census, 100, 'income', SEED)
 
     tm.assert_series_equal(
         df_amostra_estratificada['income'].value_counts(),
@@ -105,19 +105,19 @@ def test_amostragem_estratificada_value_counts():
 
 
 def test_amostragem_estratificada_start():
-    df_amostra_estratificada = amostragem_estratificada(ds_census, 100, SEED)
+    df_amostra_estratificada = amostragem_estratificada(ds_census, 100, 'income', SEED)
 
     assert df_amostra_estratificada.index[0] == 25535
 
 
 def test_amostragem_estratificada_end():
-    df_amostra_estratificada = amostragem_estratificada(ds_census, 100, SEED)
+    df_amostra_estratificada = amostragem_estratificada(ds_census, 100, 'income', SEED)
 
     assert df_amostra_estratificada.index[-1] == 4521
 
 
 def test_amostragem_estratificada_mean_age():
-    df_amostra_estratificada = amostragem_estratificada(ds_census, 100, SEED)
+    df_amostra_estratificada = amostragem_estratificada(ds_census, 100, 'income', SEED)
 
     assert df_amostra_estratificada['age'].mean() == 37.24
 

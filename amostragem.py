@@ -40,7 +40,7 @@ def amostragem_agrupamento(dataset, amostras, seed=None):
     return dataset[dataset['grupo'] == grupo_selecionado]
 
 
-def amostragem_estratificada(dataset, amostras, seed=None):
+def amostragem_estratificada(dataset, amostras, campo, seed=None):
     percentual = amostras / len(dataset)
     split = StratifiedShuffleSplit(test_size=percentual, random_state=seed)
 
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     print(df_amostra_agrupamento)
 
     print('\nAmostragem estratificada')
-    df_amostra_estratificada = amostragem_estratificada(ds_census, 100)
+    df_amostra_estratificada = amostragem_estratificada(ds_census, 'income', 100)
     print(df_amostra_estratificada.shape)
     print(df_amostra_estratificada['income'].value_counts())
     print(df_amostra_estratificada)
